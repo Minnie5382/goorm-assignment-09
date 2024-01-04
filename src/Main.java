@@ -1,28 +1,40 @@
 import MyShop.Cart;
 import MyShop.Product;
 
+import java.io.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // 상품 목록, 상품 객체 생성
         Set<Product> productList = new HashSet<>();
 
-        Product kasha = new Product(1000, "도도 장난감", 1000);
-        Product food = new Product(1001, "지용이 사료", 2000);
-        Product bottle = new Product(1002, "샤샤 물통", 3000);
-        Product cloth = new Product(1003, "정우 꼬까옷", 4000);
-        Product blanket = new Product(1004, "지용이 담요", 5000);
+        BufferedReader br;
+        String line;
+        String path = "/Users/minn/Desktop/goorm/goorm-assignment-09-cart/src/data.csv";
+        List<Product> myProducts = new ArrayList<>();
 
-        // 상품리스트에서 상품을 넣는다.
-        productList.add(kasha);
-        productList.add(food);
-        productList.add(bottle);
-        productList.add(cloth);
-        productList.add(blanket);
+        try{
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(path), "utf-8"));
+
+            while ((line = br.readLine()) != null) {
+                String[] temp = line.split(",");
+                Product product = new Product(Integer.parseInt(temp[0]), temp[1], Integer.parseInt(temp[2]));
+                myProducts.add(product);
+
+            }
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException();
+        } catch (UnsupportedEncodingException e) {
+            throw new UnsupportedEncodingException();
+        } catch (IOException e) {
+            throw new IOException();
+        }
 
         System.out.println("민희's 펫샵 상품 목록 : ");
         for(Product p : productList) {
@@ -36,28 +48,28 @@ public class Main {
 
         // 장바구니에 상품 추가
         System.out.println("\n((( 장바구니에 샤샤 물통 3개 담는 중 )))");
-        cart.addProduct(bottle, 3);
+        cart.addProduct(myProducts.get(2), 3);
         System.out.println("((( 장바구니에 도도 장난감 10개 담는 중 )))");
-        cart.addProduct(kasha, 10);
+        cart.addProduct(myProducts.get(0), 10);
         System.out.println("((( 장바구니에 정우 꼬까옷 1개 담는 중 )))");
-        cart.addProduct(cloth, 1);
+        cart.addProduct(myProducts.get(3), 1);
         cart.showItems();
 
         // 장바구니에 상품 삭제
         System.out.println("\n((( 장바구니에서 도도 장난감 5개 빼는 중 )))");
-        cart.removeProduct(kasha, 5);
+        cart.removeProduct(myProducts.get(0), 5);
         cart.showItems();
 
         System.out.println("\n((( 장바구니에서 샤샤 물통 전부 다 빼는 중 )))");
-        cart.removeProduct(bottle, 3);
+        cart.removeProduct(myProducts.get(2), 3);
         cart.showItems();
 
         System.out.println("\n((( 장바구니에서 정우 꼬까옷 3개 빼는 중 - 에러 테스트)))");
-        cart.removeProduct(cloth, 3);
+        cart.removeProduct(myProducts.get(3), 3);
         cart.showItems();
 
         System.out.println("\n((( 장바구니에서 지용이 담요 1개 빼는 중 - 에러 테스트)))");
-        cart.removeProduct(blanket, 1);
+        cart.removeProduct(myProducts.get(4), 1);
         cart.showItems();
 
     }

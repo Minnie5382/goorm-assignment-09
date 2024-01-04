@@ -2,6 +2,7 @@ package MyShop;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Product extends HashSet {
@@ -53,17 +54,8 @@ public class Product extends HashSet {
         }
     }
 
-//    @Override
-//    public int hashCode() {
-//        int h = 0;
-//        Iterator<E> i = iterator();
-//        while (i.hasNext()) {
-//            E obj = i.next();
-//            if (obj != null)
-//                h += obj.hashCode();
-//        }
-//        return h;
-//    }
-
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), key, name, price);
+    }
 }
